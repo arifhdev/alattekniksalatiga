@@ -1,0 +1,9 @@
+*.zip
+*.sql
+**/node_modules
+**/.next
+web/public/admin
+studio/dist
+studio/schema.json
+.agents
+.claude

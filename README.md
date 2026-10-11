@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Duta Teknik Salatiga — alattekniksalatiga.com
 
-## Getting Started
+Rebuild situs WordPress/WooCommerce lama **Duta Teknik Salatiga** (toko alat teknik, besi & safety).
 
-First, run the development server:
+| Folder | Isi |
+|---|---|
+| `web/` | Situs Next.js 16 (App Router, Cache Components, Tailwind v4) |
+| `studio/` | Sanity Studio (admin), di-build statis ke `web/public/admin` → tampil di **`/admin`** |
+
+Konten (produk, kategori, foto, teks Beranda/Tentang Kami, kontak & WhatsApp) disimpan di **Sanity** — project `v7qqo7r0`, dataset `production`.
+
+## Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# terminal 1 — situs (http://localhost:3000)
+cd web && npm install && npm run dev
+
+# terminal 2 — admin (http://localhost:3333/admin)
+cd studio && npm install && npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Setelah mengubah skema atau query GROQ: `cd studio && npm run typegen` (menulis `web/sanity.types.ts`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy (Vercel)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Project Vercel `alattekniksalatiga` dengan **Root Directory `web`**. `npm run build` di `web/` membangun Studio dulu (`build:admin`) lalu Next.js.
 
-## Learn More
+Env var di Vercel: `SANITY_REVALIDATE_SECRET` (sama dengan secret webhook Sanity).
 
-To learn more about Next.js, take a look at the following resources:
+## Alur update konten
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Edit & **Publish** di `/admin`.
+2. Webhook Sanity → `POST /api/revalidate` → cache halaman di-refresh (±5 detik).
+3. Pengunjung yang sedang membuka situs juga langsung dapat update via `<SanityLive />`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Saat pindah ke domain sendiri, tambahkan domainnya di Vercel, lalu `cd studio && npx sanity cors add https://<domain> --credentials` dan ubah URL webhook di sanity.io/manage.
 
-## Deploy on Vercel
+## Arsip WordPress
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Konten awal diimpor dari dump WordPress: `web/scripts/wp-import/*.py` (SQL → JSON) lalu `studio/scripts/import-wordpress.ts` (JSON → Sanity, idempoten).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+Developed by [Revelation Soft](https://revelation.co.id) · Built with Next.js & Claude
