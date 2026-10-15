@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { SanityImage } from "@/components/sanity-image";
 import type { ProductCardData } from "@/sanity/types";
 
@@ -38,7 +37,7 @@ export function ProductVisual({
       <span className="relative font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
         {product.category?.title}
       </span>
-      <span className="relative font-display text-[clamp(1.75rem,4vw,2.75rem)] leading-[1.02] text-balance">
+      <span className="relative text-[clamp(1.5rem,3.5vw,2.25rem)] leading-[1.05] font-semibold text-balance">
         {product.title}
       </span>
     </div>
@@ -49,28 +48,19 @@ export function ProductCard({ product, priority }: { product: ProductCardData; p
   return (
     <Link
       href={`/produk/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl bg-card ring-1 ring-line transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgb(11_13_17/0.35)]"
+      className="group flex flex-col border border-line bg-card transition duration-300 hover:border-brand/40 hover:shadow-[0_12px_30px_-15px_rgb(0_0_0/0.3)]"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-paper-2">
+      <div className="relative aspect-square overflow-hidden bg-paper-2">
         <ProductVisual
           product={product}
           priority={priority}
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-          className="transition duration-700 ease-out group-hover:scale-[1.04]"
+          className="transition duration-500 ease-out group-hover:scale-[1.04]"
         />
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <span className="font-mono text-[10px] tracking-[0.25em] text-brand uppercase">{product.category?.name}</span>
-        <h3 className="mt-2 text-lg font-semibold tracking-tight text-ink">{product.title}</h3>
-        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted">{product.excerpt}</p>
-        <span className="mt-auto inline-flex items-center gap-1 pt-5 text-sm font-medium text-ink">
-          Lihat detail
-          <ArrowUpRight
-            className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            aria-hidden
-          />
-        </span>
-      </div>
+      <h3 className="px-3 py-3 text-sm leading-snug font-semibold sm:px-4 sm:py-3.5 sm:text-[15px] text-ink transition-colors group-hover:text-brand">
+        {product.title}
+      </h3>
     </Link>
   );
 }

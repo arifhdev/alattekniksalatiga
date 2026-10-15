@@ -47,7 +47,7 @@ export default function ProductPage({ params }: PageProps<"/produk/[slug]">) {
 
 function ProductSkeleton() {
   return (
-    <section aria-busy="true" className="mx-auto max-w-7xl px-4 pt-32 pb-16 sm:px-6 sm:pt-36">
+    <section aria-busy="true" className="mx-auto max-w-6xl px-4 pt-14 pb-16 sm:px-6 sm:pt-16">
       <div className="h-4 w-64 animate-pulse rounded bg-paper-2" />
       <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-16">
         <div className="aspect-square animate-pulse rounded-3xl bg-paper-2" />
@@ -82,7 +82,7 @@ async function ProductDetail({ params }: { params: PageProps<"/produk/[slug]">["
 
   return (
     <>
-      <section className="mx-auto max-w-7xl px-4 pt-32 pb-16 sm:px-6 sm:pt-36">
+      <section className="mx-auto max-w-6xl px-4 pt-14 pb-16 sm:px-6 sm:pt-16">
         <Breadcrumbs
           tone="dark"
           items={[
@@ -121,14 +121,14 @@ async function ProductDetail({ params }: { params: PageProps<"/produk/[slug]">["
                   href={waLink(settings.whatsapp?.[0]?.number, message)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 font-medium text-ink transition hover:bg-[#3be07a]"
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-sm bg-[#25D366] px-6 py-3.5 font-medium text-ink transition hover:bg-[#3be07a]"
                 >
                   <WhatsAppLogo className="size-5" /> Tanya via WhatsApp
                 </a>
                 {phone && (
                   <a
                     href={telLink(phone)}
-                    className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 font-medium text-ink ring-1 ring-line transition hover:bg-paper-2"
+                    className="inline-flex items-center justify-center gap-2 rounded-sm px-6 py-3.5 font-medium text-ink ring-1 ring-line transition hover:bg-paper-2"
                   >
                     <Phone className="size-4" aria-hidden /> Telepon
                   </a>
@@ -149,11 +149,11 @@ async function ProductDetail({ params }: { params: PageProps<"/produk/[slug]">["
       </section>
 
       <section className="border-t border-line bg-card">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-12">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <span className="font-mono text-[11px] tracking-[0.28em] text-muted uppercase">Deskripsi Produk</span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-ink">
-              Tentang <span className="font-display font-normal text-brand italic">{product.title}</span>
+              Tentang <span className="text-brand">{product.title}</span>
             </h2>
             <Link href="/produk" className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-brand">
               <ArrowLeft className="size-4" aria-hidden /> Kembali ke katalog
@@ -187,7 +187,7 @@ async function ProductDetail({ params }: { params: PageProps<"/produk/[slug]">["
       </section>
 
       {product.related.length > 0 && category && (
-        <section className="mx-auto max-w-7xl px-4 pt-20 sm:px-6 sm:pt-28">
+        <section className="mx-auto max-w-6xl px-4 pt-20 sm:px-6 sm:pt-28">
           <div className="flex items-baseline justify-between gap-4 border-b border-line pb-4">
             <h2 className="text-2xl font-semibold tracking-tight text-ink">Produk terkait</h2>
             <Link

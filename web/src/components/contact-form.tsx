@@ -81,7 +81,7 @@ export function ContactForm({ storeName, accounts }: { storeName: string; accoun
         <p className="text-sm text-muted">Pesan akan dibuka di WhatsApp agar dibalas lebih cepat.</p>
         <button
           type="submit"
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-3.5 font-medium text-white transition hover:bg-brand"
+          className="inline-flex items-center justify-center gap-2 rounded-sm bg-ink px-7 py-3.5 font-medium text-white transition hover:bg-brand"
         >
           Kirim Pesan <Send className="size-4" aria-hidden />
         </button>

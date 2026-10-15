@@ -24,7 +24,7 @@ export default async function ProductsPage() {
         image={staticImages.productsHero}
         crumbs={[{ href: "/", label: "Beranda" }, { label: "Produk" }]}
       />
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <CatalogBrowser products={products} categories={categories} />
       </section>
       <CtaBand />

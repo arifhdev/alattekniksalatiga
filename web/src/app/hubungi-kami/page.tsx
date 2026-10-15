@@ -79,7 +79,7 @@ export default async function ContactPage() {
         crumbs={[{ href: "/", label: "Beranda" }, { label: "Hubungi Kami" }]}
       />
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map(({ icon: Icon, label, body }) => (
             <li key={label} className="reveal rounded-2xl bg-card p-6 ring-1 ring-line">
@@ -95,7 +95,7 @@ export default async function ContactPage() {
         <div className="mt-6 grid gap-6 lg:grid-cols-5">
           <div className="reveal rounded-3xl bg-card p-6 ring-1 ring-line sm:p-10 lg:col-span-3">
             <h2 className="text-3xl font-semibold tracking-tight text-ink">
-              Kirim <span className="font-display font-normal text-brand italic">pesan</span>
+              Kirim <span className="text-brand">pesan</span>
             </h2>
             <p className="mt-2 text-muted">Ceritakan kebutuhan Anda, kami balas secepatnya.</p>
             <div className="mt-8">
@@ -121,7 +121,7 @@ export default async function ContactPage() {
                 href={directions}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-ink transition hover:bg-brand-bright hover:text-white"
+                className="mt-5 inline-flex items-center gap-2 rounded-sm bg-white px-5 py-3 text-sm font-medium text-ink transition hover:bg-brand-bright hover:text-white"
               >
                 Petunjuk arah <ArrowUpRight className="size-4" aria-hidden />
               </a>

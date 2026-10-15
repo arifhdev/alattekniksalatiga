@@ -2,107 +2,162 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { useState } from "react";
+import { CircleCheck, MapPin, Menu, Phone, Search, X } from "lucide-react";
+import { WhatsAppLogo } from "@/components/brand-icons";
 import { Logo } from "@/components/logo";
-import { defaultInquiry, nav, waLink } from "@/lib/site";
+import { mapLink, telLink, waLink } from "@/lib/site";
+import type { CategoryData, Settings } from "@/sanity/types";
 
-export function Header({ whatsapp, since }: { whatsapp?: string | null; since?: number | null }) {
+export function Header({ settings, categories }: { settings: Settings; categories: CategoryData[] }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-  }, [open]);
-
-  // product detail pages open on a light background instead of a dark hero
-  const solid = scrolled || open || /^\/produk\/.+/.test(pathname);
+  const items = [
+    { href: "/", label: "Beranda" },
+    { href: "/tentang-kami", label: "Tentang Kami" },
+    ...categories.map((c) => ({ href: `/kategori/${c.slug}`, label: c.title ?? "" })),
+    { href: "/produk", label: "Semua Produk" },
+  ];
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const addressLine = [settings.address?.street, settings.address?.city].filter(Boolean).join(" ");
+  const mainWa = settings.whatsapp?.[0];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6">
-      <div
-        className={`mx-auto flex max-w-7xl items-center justify-between rounded-2xl border px-3 py-2.5 transition-all duration-500 sm:px-4 ${
-          solid
-            ? "border-white/10 bg-ink/80 shadow-[0_20px_60px_-20px_rgb(0_0_0/0.6)] backdrop-blur-xl"
-            : "border-white/10 bg-ink/40 backdrop-blur-md"
-        }`}
-      >
-        <Logo tone="light" since={since} />
+    <header className="relative z-40">
+      {/* top bar */}
+      <div className="bg-paper-2 text-[12px] text-muted sm:text-[13px]">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-1 px-4 py-2 sm:px-6 sm:py-2.5">
+          {!!settings.phones?.length && (
+            <span className="flex items-center gap-2">
+              <Phone className="size-3.5 text-brand" aria-hidden />
+              {settings.phones.map((p, i) => (
+                <span key={p}>
+                  {i > 0 && " / "}
+                  <a href={telLink(p)} className="hover:text-brand">
+                    {p}
+                  </a>
+                </span>
+              ))}
+            </span>
+          )}
+          {!!settings.whatsapp?.length && (
+            <span className="flex items-center gap-2 sm:border-l sm:border-line sm:pl-5">
+              <WhatsAppLogo className="size-3.5 text-brand" />
+              {settings.whatsapp.map((w, i) => (
+                <span key={w._key}>
+                  {i > 0 && " / "}
+                  <a href={waLink(w.number)} target="_blank" rel="noopener noreferrer" className="hover:text-brand">
+                    {w.display}
+                  </a>
+                </span>
+              ))}
+            </span>
+          )}
+        </div>
+      </div>
 
-        <nav aria-label="Navigasi utama" className="hidden items-center gap-1 md:flex">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={isActive(item.href) ? "page" : undefined}
-              className={`rounded-full px-4 py-2 text-sm transition-colors ${
-                isActive(item.href) ? "bg-white/10 text-white" : "text-white/65 hover:text-white"
-              }`}
-            >
-              {item.label}
+      {/* logo row */}
+      <div className="bg-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4 sm:px-6 sm:py-6 md:pb-12">
+          <Logo />
+          <div className="flex items-center gap-8">
+            {addressLine && (
+              <div className="hidden items-center gap-3 md:flex">
+                <CircleCheck className="size-6 text-brand" strokeWidth={1.5} aria-hidden />
+                <div className="text-[13px] leading-snug">
+                  <p className="font-semibold text-ink">Alamat Toko</p>
+                  <p className="text-muted">{addressLine}</p>
+                </div>
+              </div>
+            )}
+            <ul className="flex items-center gap-3 text-ink sm:gap-4">
+              {mainWa && (
+                <li>
+                  <a href={waLink(mainWa.number)} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="hover:text-brand">
+                    <WhatsAppLogo className="size-4" />
+                  </a>
+                </li>
+              )}
+              {settings.phones?.[0] && (
+                <li>
+                  <a href={telLink(settings.phones[0])} aria-label="Telepon" className="hover:text-brand">
+                    <Phone className="size-4" aria-hidden />
+                  </a>
+                </li>
+              )}
+              <li>
+                <a
+                  href={mapLink(settings.geo, addressLine)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Lokasi di Google Maps"
+                  className="hover:text-brand"
+                >
+                  <MapPin className="size-4" aria-hidden />
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* nav bar: overlaps the section below on desktop, like the draft */}
+      <div className="relative md:-mt-6 md:-mb-6 md:px-6">
+        <div className="mx-auto flex max-w-6xl items-stretch bg-ink text-white">
+          <nav aria-label="Navigasi utama" className="hidden flex-1 items-stretch lg:flex">
+            {items.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                className={`flex items-center px-4 text-[12.5px] font-semibold tracking-wide uppercase transition-colors first:pl-5 hover:text-brand-bright ${
+                  isActive(item.href) ? "text-brand-bright" : "text-white"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Link href="/produk" aria-label="Cari produk" className="flex items-center px-4 text-white hover:text-brand-bright">
+              <Search className="size-4" aria-hidden />
             </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <a
-            href={waLink(whatsapp, defaultInquiry)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-medium text-ink transition hover:bg-brand-bright hover:text-white sm:inline-flex"
-          >
-            Minta Penawaran <ArrowUpRight className="size-4" aria-hidden />
-          </a>
+          </nav>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={open ? "Tutup menu" : "Buka menu"}
-            className="grid size-11 place-items-center rounded-full text-white hover:bg-white/10 md:hidden"
+            className="flex flex-1 items-center gap-2 px-4 py-3.5 text-sm font-semibold tracking-wide uppercase lg:hidden"
           >
-            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+            {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
+            Menu
           </button>
+          <Link
+            href="/hubungi-kami"
+            className="flex items-center bg-brand px-6 py-3.5 text-[13px] font-semibold transition hover:bg-brand-dark sm:px-10 lg:py-4"
+          >
+            Hubungi Kami
+          </Link>
         </div>
-      </div>
 
-      {open && (
-        <div
-          id="mobile-menu"
-          className="mx-auto mt-2 max-w-7xl rounded-2xl border border-white/10 bg-ink/95 p-3 backdrop-blur-xl md:hidden"
-        >
-          <nav aria-label="Navigasi seluler" className="flex flex-col">
-            {nav.map((item) => (
+        {open && (
+          <nav id="mobile-menu" aria-label="Navigasi seluler" className="mx-auto max-w-6xl bg-ink-2 lg:hidden">
+            {items.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
                 aria-current={isActive(item.href) ? "page" : undefined}
-                className={`rounded-xl px-4 py-3.5 text-lg ${isActive(item.href) ? "bg-white/10 text-white" : "text-white/70"}`}
+                className={`block border-t border-white/10 px-4 py-3.5 text-sm font-semibold tracking-wide uppercase ${
+                  isActive(item.href) ? "text-brand-bright" : "text-white"
+                }`}
               >
                 {item.label}
               </Link>
             ))}
-            <a
-              href={waLink(whatsapp, defaultInquiry)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-3.5 font-medium text-ink"
-            >
-              Minta Penawaran via WhatsApp <ArrowUpRight className="size-4" aria-hidden />
-            </a>
           </nav>
-        </div>
-      )}
+        )}
+      </div>
     </header>
   );
 }

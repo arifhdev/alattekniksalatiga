@@ -29,13 +29,13 @@ export default async function AboutPage() {
         crumbs={[{ href: "/", label: "Beranda" }, { label: "Tentang Kami" }]}
       />
 
-      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32">
+      <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32">
         <div className="grid gap-16 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <div className="reveal lg:sticky lg:top-32">
               <Eyebrow>Cerita Kami</Eyebrow>
               {about.quote && (
-                <p className="mt-6 font-display text-[clamp(2rem,4vw,3.25rem)] leading-[1.08] text-ink italic">
+                <p className="mt-4 text-[clamp(1.5rem,3vw,2.25rem)] leading-snug font-light text-ink italic">
                   “{about.quote}”
                 </p>
               )}
@@ -68,7 +68,7 @@ export default async function AboutPage() {
       </section>
 
       {!!about.photos?.length && (
-        <section className="mx-auto max-w-7xl px-4 sm:px-6">
+        <section className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid gap-4 md:grid-cols-3">
             {about.photos.map((img, i) => (
               <div
@@ -84,16 +84,16 @@ export default async function AboutPage() {
 
       <section className="grain relative mt-24 overflow-hidden bg-ink py-24 text-white sm:mt-32 sm:py-32">
         <div className="hairline-grid absolute inset-0" aria-hidden />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
           <SectionHeading tone="light" {...about.rangeHeading} />
           {!!about.productRange?.length && (
             <ul className="mt-12 flex flex-wrap gap-2.5">
               {about.productRange.map((r) => (
-                <li key={r} className="reveal rounded-full border border-white/15 px-5 py-2.5 text-white/85">
+                <li key={r} className="reveal rounded-sm border border-white/15 px-5 py-2.5 text-white/85">
                   {r}
                 </li>
               ))}
-              <li className="reveal rounded-full bg-white/10 px-5 py-2.5 text-white/60">…dan masih banyak lagi</li>
+              <li className="reveal rounded-sm bg-white/10 px-5 py-2.5 text-white/60">…dan masih banyak lagi</li>
             </ul>
           )}
           {brands.length > 0 && (

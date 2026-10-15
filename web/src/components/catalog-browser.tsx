@@ -33,7 +33,7 @@ export function CatalogBrowser({ products, categories }: { products: ProductCard
 
   return (
     <div>
-      <div className="sticky top-24 z-30 -mx-4 flex flex-col gap-3 bg-paper/85 px-4 py-4 backdrop-blur-xl sm:mx-0 sm:rounded-2xl sm:px-0 md:flex-row md:items-center md:justify-between">
+      <div className="sticky top-0 z-30 -mx-4 flex flex-col gap-3 bg-paper/85 px-4 py-4 backdrop-blur-xl sm:mx-0 sm:rounded-2xl sm:px-0 md:flex-row md:items-center md:justify-between">
         <div role="tablist" aria-label="Filter kategori" className="flex gap-1.5 overflow-x-auto">
           {tabs.map((t) => (
             <button
@@ -42,7 +42,7 @@ export function CatalogBrowser({ products, categories }: { products: ProductCard
               type="button"
               aria-selected={filter === t.id}
               onClick={() => setFilter(t.id)}
-              className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition ${
+              className={`inline-flex shrink-0 items-center gap-2 rounded-sm px-4 py-2.5 text-sm font-medium transition ${
                 filter === t.id ? "bg-ink text-white" : "bg-card text-ink ring-1 ring-line hover:ring-ink/30"
               }`}
             >
@@ -59,14 +59,14 @@ export function CatalogBrowser({ products, categories }: { products: ProductCard
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Cari produk, mis. pipa, helm, genset…"
-            className="h-11 w-full rounded-full bg-card pr-10 pl-11 text-[15px] text-ink ring-1 ring-line outline-none placeholder:text-muted/80 focus:ring-2 focus:ring-brand"
+            className="h-11 w-full rounded-sm bg-card pr-10 pl-11 text-[15px] text-ink ring-1 ring-line outline-none placeholder:text-muted/80 focus:ring-2 focus:ring-brand"
           />
           {query && (
             <button
               type="button"
               onClick={() => setQuery("")}
               aria-label="Hapus pencarian"
-              className="absolute top-1/2 right-2 grid size-8 -translate-y-1/2 place-items-center rounded-full text-muted hover:bg-paper-2"
+              className="absolute top-1/2 right-2 grid size-8 -translate-y-1/2 place-items-center rounded-sm text-muted hover:bg-paper-2"
             >
               <X className="size-4" />
             </button>

@@ -1,21 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Hind } from "next/font/google";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { WhatsAppFab } from "@/components/whatsapp-fab";
 import { siteUrl, staticImages } from "@/lib/site";
-import { getSettings } from "@/sanity/fetch";
+import { getCategories, getSettings } from "@/sanity/fetch";
 import { SanityLive } from "@/sanity/live";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-});
+const hind = Hind({ variable: "--font-hind", subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
@@ -47,11 +40,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0b0d11",
+  themeColor: "#111111",
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const settings = await getSettings();
+  const [settings, categories] = await Promise.all([getSettings(), getCategories()]);
   const localBusiness = {
     "@context": "https://schema.org",
     "@type": "HardwareStore",
@@ -76,7 +69,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="id"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
+      className={`${hind.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <a
@@ -85,7 +78,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         >
           Lewati ke konten
         </a>
-        <Header whatsapp={settings.whatsapp?.[0]?.number} since={settings.since} />
+        <Header settings={settings} categories={categories} />
         <main id="konten" className="flex-1">
           {children}
         </main>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowUpRight, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import { WhatsAppLogo } from "@/components/brand-icons";
 import { staticImages, telLink, waLink } from "@/lib/site";
 import { getSettings } from "@/sanity/fetch";
@@ -17,38 +17,33 @@ export async function CtaBand({
   const bg = staticImages.ctaBackground;
   const phone = settings.phones?.[0];
   return (
-    <section className="px-4 py-20 sm:px-6 sm:py-28">
-      <div className="grain reveal relative isolate mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-ink px-6 py-16 text-white sm:px-14 sm:py-20">
-        <Image src={bg.src} alt="" fill sizes="(min-width: 1280px) 1280px, 100vw" className="-z-20 object-cover opacity-40" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/85 to-ink/30" aria-hidden />
+    <section className="relative isolate overflow-hidden bg-brand text-white">
+      <Image src={bg.src} alt="" fill sizes="100vw" className="-z-20 object-cover opacity-15 mix-blend-multiply" />
+      <div className="reveal mx-auto flex max-w-6xl flex-col gap-8 px-4 py-14 sm:px-6 md:flex-row md:items-center md:justify-between">
         <div className="max-w-2xl">
-          {cta?.eyebrow && (
-            <span className="font-mono text-[11px] tracking-[0.28em] text-white/55 uppercase">{cta.eyebrow}</span>
-          )}
-          <h2 className="mt-5 text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.02] font-semibold tracking-[-0.035em] text-balance">
-            {title ?? cta?.title}{" "}
-            {cta?.accent && <span className="font-display font-normal text-brand-bright italic">{cta.accent}</span>}
+          {cta?.eyebrow && <p className="text-sm font-medium text-white/80">{cta.eyebrow}</p>}
+          <h2 className="mt-2 text-[clamp(1.6rem,3vw,2.25rem)] leading-tight font-semibold text-balance">
+            {title ?? cta?.title} {cta?.accent}
           </h2>
-          {cta?.description && <p className="mt-5 text-lg leading-relaxed text-white/65">{cta.description}</p>}
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          {cta?.description && <p className="mt-3 text-[15px] leading-relaxed text-white/85">{cta.description}</p>}
+        </div>
+        <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+          <a
+            href={waLink(settings.whatsapp?.[0]?.number, message)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3.5 text-sm font-semibold text-brand transition hover:bg-ink hover:text-white"
+          >
+            <WhatsAppLogo className="size-5" /> Chat WhatsApp
+          </a>
+          {phone && (
             <a
-              href={waLink(settings.whatsapp?.[0]?.number, message)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 font-medium text-ink transition hover:bg-[#3be07a]"
+              href={telLink(phone)}
+              className="inline-flex items-center justify-center gap-2 border border-white/60 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
             >
-              <WhatsAppLogo className="size-5" /> Chat WhatsApp
-              <ArrowUpRight className="size-4" aria-hidden />
+              <Phone className="size-4" aria-hidden /> {phone}
             </a>
-            {phone && (
-              <a
-                href={telLink(phone)}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3.5 font-medium text-white transition hover:bg-white/10"
-              >
-                <Phone className="size-4" aria-hidden /> {phone}
-              </a>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </section>

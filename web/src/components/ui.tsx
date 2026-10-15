@@ -8,17 +8,11 @@ type StaticImg = { src: string; width: number; height: number };
 
 export function Eyebrow({ children, tone = "dark" }: { children: ReactNode; tone?: "dark" | "light" }) {
   return (
-    <span
-      className={`inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.28em] uppercase ${
-        tone === "light" ? "text-white/60" : "text-muted"
-      }`}
-    >
-      <span className="h-px w-6 bg-current" aria-hidden />
-      {children}
-    </span>
+    <span className={`text-sm font-medium tracking-wide ${tone === "light" ? "text-spark" : "text-brand"}`}>{children}</span>
   );
 }
 
+/** Centered section title with the short blue rule underneath, as in the draft. */
 export function SectionHeading({
   eyebrow,
   title,
@@ -35,31 +29,23 @@ export function SectionHeading({
   action?: ReactNode;
 }) {
   return (
-    <div className="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-      <div className="max-w-2xl">
-        {eyebrow && <Eyebrow tone={tone}>{eyebrow}</Eyebrow>}
-        <h2
-          className={`mt-5 text-[clamp(2rem,4.6vw,3.5rem)] leading-[1.02] font-semibold tracking-[-0.035em] text-balance ${
-            tone === "light" ? "text-white" : "text-ink"
-          }`}
-        >
-          {title}
-          {accent && (
-            <>
-              {" "}
-              <span className={`font-display font-normal italic ${tone === "light" ? "text-brand-bright" : "text-brand"}`}>
-                {accent}
-              </span>
-            </>
-          )}
-        </h2>
-        {description && (
-          <p className={`mt-5 text-lg leading-relaxed ${tone === "light" ? "text-white/60" : "text-muted"}`}>
-            {description}
-          </p>
-        )}
-      </div>
-      {action}
+    <div className="reveal flex flex-col items-center text-center">
+      {eyebrow && <Eyebrow tone={tone}>{eyebrow}</Eyebrow>}
+      <h2
+        className={`mt-2 text-[clamp(1.6rem,3vw,2rem)] leading-tight font-normal text-balance ${
+          tone === "light" ? "text-white" : "text-ink"
+        }`}
+      >
+        {title}
+        {accent && <> {accent}</>}
+      </h2>
+      <span className="mt-4 block h-[3px] w-12 bg-brand" aria-hidden />
+      {description && (
+        <p className={`mt-5 max-w-2xl text-[15px] leading-relaxed ${tone === "light" ? "text-white/65" : "text-muted"}`}>
+          {description}
+        </p>
+      )}
+      {action && <div className="mt-6">{action}</div>}
     </div>
   );
 }
@@ -82,36 +68,24 @@ export function PageHero({
   crumbs: { href?: string; label: string }[];
 }) {
   return (
-    <section className="grain relative isolate overflow-hidden bg-ink pt-36 pb-20 text-white sm:pt-44 sm:pb-24">
+    <section className="relative isolate overflow-hidden bg-ink pt-20 pb-14 text-white sm:pt-24 sm:pb-16">
       {sanityImage ? (
-        <SanityImage
-          image={sanityImage}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="hero-zoom -z-20 object-cover opacity-45"
-        />
+        <SanityImage image={sanityImage} alt="" fill priority sizes="100vw" className="-z-20 object-cover opacity-50" />
       ) : (
-        image && (
-          <Image src={image.src} alt="" fill priority sizes="100vw" className="hero-zoom -z-20 object-cover opacity-45" />
-        )
+        image && <Image src={image.src} alt="" fill priority sizes="100vw" className="-z-20 object-cover opacity-50" />
       )}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/70 to-ink/30" aria-hidden />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <Breadcrumbs items={crumbs} />
-        <div className="hero-in mt-8 max-w-3xl">
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/55 to-black/30" aria-hidden />
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="hero-in max-w-3xl">
           {eyebrow && <Eyebrow tone="light">{eyebrow}</Eyebrow>}
-          <h1 className="mt-5 text-[clamp(2.5rem,6.5vw,5rem)] leading-[0.98] font-semibold tracking-[-0.04em] text-balance">
+          <h1 className="mt-3 text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-bold tracking-tight text-balance uppercase">
             {title}
-            {accent && (
-              <>
-                {" "}
-                <span className="font-display font-normal text-brand-bright italic">{accent}</span>
-              </>
-            )}
+            {accent && <> {accent}</>}
           </h1>
-          {description && <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/65">{description}</p>}
+          {description && <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/80">{description}</p>}
+        </div>
+        <div className="mt-8">
+          <Breadcrumbs items={crumbs} />
         </div>
       </div>
     </section>

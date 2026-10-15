@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps<"/kategori/[slug]">
 
 export default function CategoryPage({ params }: PageProps<"/kategori/[slug]">) {
   return (
-    <Suspense fallback={<div aria-busy="true" className="min-h-[70svh] animate-pulse bg-ink" />}>
+    <Suspense fallback={<div aria-busy="true" className="min-h-[50svh] animate-pulse bg-paper-2" />}>
       <CategoryContent params={params} />
     </Suspense>
   );
@@ -44,14 +44,14 @@ async function CategoryContent({ params }: { params: PageProps<"/kategori/[slug]
         sanityImage={category.image}
         crumbs={[{ href: "/", label: "Beranda" }, { href: "/produk", label: "Produk" }, { label: category.name ?? "" }]}
       />
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <nav aria-label="Kategori lain" className="flex flex-wrap gap-2">
           {categories.map((c) => (
             <Link
               key={c._id}
               href={`/kategori/${c.slug}`}
               aria-current={c.slug === category.slug ? "page" : undefined}
-              className={`rounded-full px-4 py-2.5 text-sm font-medium transition ${
+              className={`rounded-sm px-4 py-2.5 text-sm font-medium transition ${
                 c.slug === category.slug ? "bg-ink text-white" : "bg-card text-ink ring-1 ring-line hover:ring-ink/30"
               }`}
             >
